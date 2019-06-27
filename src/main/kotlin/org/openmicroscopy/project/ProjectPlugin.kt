@@ -30,6 +30,7 @@ class ProjectPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
         apply<ArtifactPlugin>()
         apply<ProjectRepositoriesPlugin>()
+        // apply<ReleasePlugin>()
         apply<ProjectReleasePlugin>()
     }
 }
