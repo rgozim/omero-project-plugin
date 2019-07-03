@@ -2,16 +2,15 @@ plugins {
     groovy
     `kotlin-dsl`
     `java-gradle-plugin`
-    id("additional-artifacts-plugin")
-    id("functional-test-plugin")
-    id("plugin-publishing-plugin")
+    id("org.openmicroscopy.additional-repositories")
+    id("org.openmicroscopy.functional-test")
+    id("org.openmicroscopy.plugin-publishing")
 }
 
-group = "org.openmicroscopy"
+project.group = "org.openmicroscopy"
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
-}
+// Project properties can be accessed via delegation
+val omeroArtifactVersion: String by project
 
 repositories {
     mavenLocal()
@@ -25,12 +24,8 @@ java {
 
 dependencies {
     implementation(kotlin("gradle-plugin"))
-    implementation("org.jfrog.buildinfo:build-info-extractor-gradle:4.9.3")
-    implementation("org.ajoberstar.reckon:reckon-gradle:latest.release")
-
-    api(fileTree("$projectDir/buildSrc/build/libs").matching {
-        include("*.jar")
-    })
+    implementation("org.openmicroscopy:omero-artifact-plugin:$omeroArtifactVersion")
+    implementation("org.openmicroscopy:omero-reckon-plugin:latest.release")
 }
 
 gradlePlugin {
