@@ -8,8 +8,18 @@ pluginManagement {
         eachPlugin {
             // Work around https://github.com/gradle/gradle/issues/1697.
             if (requested.version == null && requested.id.namespace == "org.openmicroscopy") {
-                val version = gradle.rootProject.properties["omeroArtifactVersion"]
-                useModule("org.openmicroscopy:omero-artifact-plugin:$version")
+                val pluginEnvName =
+                        requested.id.name.split('-')
+                                .joinToString(separator = "_").toUpperCase() + "_VERSION"
+                val propertyName =
+                        requested.id.name.split('-')
+                                .joinToString(separator = "") { it.capitalize() }
+                                .decapitalize() + "Version"
+
+                val version: Any = gradle.rootProject.findProperty(pluginEnvName)
+                        ?: gradle.rootProject.findProperty(propertyName)!!
+
+                useVersion(version.toString())
             }
         }
     }
