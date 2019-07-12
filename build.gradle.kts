@@ -28,7 +28,7 @@ java {
 dependencies {
     implementation(kotlin("gradle-plugin"))
     implementation("org.openmicroscopy:omero-artifact-plugin:5.5.2-SNAPSHOT")
-    implementation("org.openmicroscopy:omero-reckon-plugin:5.5.2-SNAPSHOT")
+    implementation("org.openmicroscopy:omero-release-plugin:5.5.2-SNAPSHOT")
 }
 
 gradlePlugin {

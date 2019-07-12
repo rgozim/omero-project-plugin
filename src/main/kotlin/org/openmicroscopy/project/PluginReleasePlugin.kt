@@ -26,8 +26,8 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.*
-import org.openmicroscopy.reckon.gradle.ReckonExtension
-import org.openmicroscopy.reckon.gradle.ReckonPlugin
+import org.openmicroscopy.release.gradle.ReleaseExtension
+import org.openmicroscopy.release.gradle.ReleasePlugin
 
 class PluginReleasePlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
@@ -37,19 +37,19 @@ class PluginReleasePlugin : Plugin<Project> {
 
     private
     fun Project.applyReckonPlugin() {
-        apply<ReckonPlugin>()
+        apply<ReleasePlugin>()
     }
 
     private
     fun Project.configureReleasePluginExtension() {
-        configure<ReckonExtension> {
+        configure<ReleaseExtension> {
             // set default to patch, saying as that's what we tend to
             // work towards first
             scopeOptions(mapOf("scope" to "patch"))
         }
 
         // safety checks before releasing
-        tasks.named(ReckonPlugin.TAG_TASK).configure {
+        tasks.named(ReleasePlugin.TAG_TASK).configure {
             doFirst {
                 val grgit = (project.findProperty("grgit")
                         ?: throw GradleException("Can't find grgit")) as Grgit
@@ -73,7 +73,7 @@ class PluginReleasePlugin : Plugin<Project> {
         }
 
         tasks.matching { it.name == "check" }.configureEach {
-            tasks.getByName(ReckonPlugin.TAG_TASK).dependsOn(this)
+            tasks.getByName(ReleasePlugin.TAG_TASK).dependsOn(this)
         }
     }
 }
